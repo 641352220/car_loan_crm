@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.AppManage.dao.MarketingCarDao">
+
+	<select id="get" resultType="com.bootdo.AppManage.domain.MarketingCarDO">
+		SELECT a.*,b.`name` as marketingName,CONCAT(e.brand_name,e.model_name,e.style_name) as carName,c.car_product_name as carProductName,
+		d.car_product_information_name as carProductInformationName
+		FROM app_marketing_car as a,app_marketing as b,car_product as c,car_product_information as d,car_car as e WHERE a.marketing_id = b.marketing_id
+		AND a.car_product_id = c.car_product_id AND a.car_product_information_id = d.car_product_information_id AND a.car_id = e.car_id
+		AND app_marketing_car_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.AppManage.domain.MarketingCarDO">
+		SELECT a.*,b.`name` as marketingName,CONCAT(e.brand_name,e.model_name,e.style_name) as carName,c.car_product_name as carProductName,
+		d.car_product_information_name as carProductInformationName
+		FROM app_marketing_car as a,app_marketing as b,car_product as c,car_product_information as d,car_car as e WHERE a.marketing_id = b.marketing_id
+		AND a.car_product_id = c.car_product_id AND a.car_product_information_id = d.car_product_information_id AND a.car_id = e.car_id
+		<if test="marketingId != null and marketingId != ''">AND a.marketing_id = #{marketingId} </if>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by app_marketing_car_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		SELECT count(1)
+		FROM app_marketing_car as a,app_marketing as b,car_product as c,car_product_information as d,car_car as e WHERE a.marketing_id = b.marketing_id
+		AND a.car_product_id = c.car_product_id AND a.car_product_information_id = d.car_product_information_id AND a.car_id = e.car_id
+		<if test="marketingId != null and marketingId != ''">AND a.marketing_id = #{marketingId} </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.AppManage.domain.MarketingCarDO">
+		insert into app_marketing_car
+		(
+			`app_marketing_car_id`, 
+			`marketing_id`, 
+			`car_id`, 
+			`adver`,
+			`car_product_id`,
+			`car_product_information_id`
+		)
+		values
+		(
+			#{appMarketingCarId}, 
+			#{marketingId}, 
+			#{carId}, 
+			#{adver},
+			#{carProductId},
+			#{carProductInformationId}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.AppManage.domain.MarketingCarDO">
+		update app_marketing_car 
+		<set>
+			<if test="marketingId != null">`marketing_id` = #{marketingId}, </if>
+			<if test="carId != null">`car_id` = #{carId}, </if>
+			<if test="adver != null">`adver` = #{adver},</if>
+			<if test="carProductId != null">`car_product_id` = #{carProductId},</if>
+			<if test="carProductInformationId != null">`car_product_information_id` = #{carProductInformationId}</if>
+		</set>
+		where app_marketing_car_id = #{appMarketingCarId}
+	</update>
+	
+	<delete id="remove">
+		delete from app_marketing_car where app_marketing_car_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from app_marketing_car where app_marketing_car_id in 
+		<foreach item="appMarketingCarId" collection="array" open="(" separator="," close=")">
+			#{appMarketingCarId}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.IncrementManage.dao.ProductClickRecordDao">
+
+	<select id="get" resultType="com.bootdo.IncrementManage.domain.ProductClickRecordDO">
+		select `increment_product_id`,`type`,`user_id`,`click_time`,`channel` from increment_product_click_record where increment_product_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.IncrementManage.domain.ProductClickRecordDO">
+		SELECT a.*,b.`name` as incrementProductName FROM increment_product_click_record as a,increment_product as b
+		WHERE a.increment_product_id = b.product_id
+		<if test="incrementProductId != null and incrementProductId != ''">
+			and increment_product_id = #{incrementProductId} </if>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by increment_product_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		SELECT COUNT(1) FROM increment_product_click_record as a,increment_product as b
+		WHERE a.increment_product_id = b.product_id
+		<if test="incrementProductId != null and incrementProductId != ''">
+			and increment_product_id = #{incrementProductId} </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.IncrementManage.domain.ProductClickRecordDO">
+		insert into increment_product_click_record
+		(
+			`increment_product_id`, 
+			`type`, 
+			`user_id`, 
+			`click_time`, 
+			`channel`
+		)
+		values
+		(
+			#{incrementProductId}, 
+			#{type}, 
+			#{userId}, 
+			#{clickTime}, 
+			#{channel}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.IncrementManage.domain.ProductClickRecordDO">
+		update increment_product_click_record 
+		<set>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="clickTime != null">`click_time` = #{clickTime}, </if>
+			<if test="channel != null">`channel` = #{channel}</if>
+		</set>
+		where increment_product_id = #{incrementProductId}
+	</update>
+	
+	<delete id="remove">
+		delete from increment_product_click_record where increment_product_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from increment_product_click_record where increment_product_id in 
+		<foreach item="incrementProductId" collection="array" open="(" separator="," close=")">
+			#{incrementProductId}
+		</foreach>
+	</delete>
+
+</mapper>

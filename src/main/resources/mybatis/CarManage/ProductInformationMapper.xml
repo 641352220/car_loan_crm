@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.CarManage.dao.ProductInformationDao">
+
+	<select id="get" resultType="com.bootdo.CarManage.domain.ProductInformationDO">
+		select `car_product_information_id`,`car_product_information_name`,`business_id`,`car_product_id`,`apply_num`,`create_by`,`create_date`,`update_by`,`update_date` from car_product_information where car_product_information_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.CarManage.domain.ProductInformationDO">
+		select cpi.`car_product_information_id`,cpi.`car_product_information_name`,cpi.`business_id`,cpi.`car_product_id`,cpi.`apply_num`,cpi.`create_by`
+		,cpi.`create_date`,cpi.`update_by`,cpi.`update_date`,cp.car_product_name as carProductName
+		from car_product_information as cpi,car_product as cp
+        <where>
+			cp.car_product_id = cpi.car_product_id
+			<if test="businessId != null and businessId != 0 and businessId != 11"> and cpi.business_id = #{businessId} </if>
+			<if test="carProductId != null and carProductId != ''"> and cpi.car_product_id = #{carProductId} </if>
+			<if test="carProductIdName != null and carProductIdName != ''"> and cp.car_product_name like concat('%', #{carProductIdName},'%') </if>
+		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by cpi.car_product_information_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from car_product_information as cpi,car_product as cp
+		<where>
+			cp.car_product_id = cpi.car_product_id
+			<if test="businessId != null and businessId != 0 and businessId != 11"> and cpi.business_id = #{businessId} </if>
+			<if test="carProductId != null and carProductId != ''"> and cpi.car_product_id = #{carProductId} </if>
+			<if test="carProductIdName != null and carProductIdName != ''"> and cp.car_product_name like concat('%', #{carProductIdName},'%') </if>
+		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.CarManage.domain.ProductInformationDO" useGeneratedKeys="true" keyProperty="carProductInformationId">
+		insert into car_product_information
+		(
+			`car_product_information_id`, 
+			`car_product_information_name`, 
+			`business_id`, 
+			`car_product_id`, 
+			`apply_num`, 
+			`create_by`, 
+			`create_date`, 
+			`update_by`, 
+			`update_date`
+		)
+		values
+		(
+			#{carProductInformationId}, 
+			#{carProductInformationName}, 
+			#{businessId}, 
+			#{carProductId}, 
+			#{applyNum}, 
+			#{createBy}, 
+			#{createDate}, 
+			#{updateBy}, 
+			#{updateDate}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.CarManage.domain.ProductInformationDO">
+		update car_product_information 
+		<set>
+			<if test="carProductInformationName != null">`car_product_information_name` = #{carProductInformationName}, </if>
+			<if test="businessId != null">`business_id` = #{businessId}, </if>
+			<if test="carProductId != null">`car_product_id` = #{carProductId}, </if>
+			<if test="applyNum != null">`apply_num` = #{applyNum}, </if>
+			<if test="createBy != null">`create_by` = #{createBy}, </if>
+			<if test="createDate != null">`create_date` = #{createDate}, </if>
+			<if test="updateBy != null">`update_by` = #{updateBy}, </if>
+			<if test="updateDate != null">`update_date` = #{updateDate}</if>
+		</set>
+		where car_product_information_id = #{carProductInformationId}
+	</update>
+	
+	<delete id="remove">
+		delete from car_product_information where car_product_information_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from car_product_information where car_product_information_id in 
+		<foreach item="carProductInformationId" collection="array" open="(" separator="," close=")">
+			#{carProductInformationId}
+		</foreach>
+	</delete>
+
+
+	<select id="getBrandIds" resultType="java.lang.Integer">
+		SELECT b.brand_id FROM car_product_information_car as a,car_car as b WHERE a.car_id = b.car_id AND car_product_information_id = #{carProductInformationId} GROUP BY a.car_id
+	</select>
+
+	<select id="getModelIds" resultType="java.lang.Integer">
+		SELECT car_model_id FROM car_product_information_car WHERE car_product_information_id = #{carProductInformationId} GROUP BY car_model_id
+	</select>
+
+	<select id="getCarIds" resultType="java.lang.Integer">
+		SELECT car_id FROM car_product_information_car WHERE car_product_information_id = #{carProductInformationId} GROUP BY car_id
+	</select>
+
+
+	<select id="listByCarProductId" resultType="com.bootdo.CarManage.domain.ProductInformationDO">
+		select `car_product_information_id`,`car_product_information_name` from car_product_information where car_product_id = #{value}
+	</select>
+</mapper>

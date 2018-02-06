@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">爆款名：</label>
+								<div class="col-sm-8">
+									<input id="name" name="name" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">跳转类型：</label>
+								<div class="col-sm-8">
+									<select data-placeholder="请选择" name="type" id="type"
+											class="form-control chosen-select" tabindex="2"
+											style="width: 100%">
+										<!--<option value="0">请选择</option> -->
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">链接：</label>
+								<div class="col-sm-8">
+									<input id="url" name="url" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">车贷产品：</label>
+								<div class="col-sm-8">
+									<select data-placeholder="请选择" name="carProductId" id="carProductId"
+											class="form-control chosen-select" tabindex="2"
+											style="width: 100%" onchange="carProductInformationIdF()">
+											<option value="">请选择</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">方案：</label>
+								<div class="col-sm-8">
+									<select data-placeholder="请选择" name="carProductInformationId" id="carProductInformationId"
+											class="form-control chosen-select" tabindex="2"
+											style="width: 100%" onchange="clearCar()">
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">排序：</label>
+								<div class="col-sm-8">
+									<input id="sort" name="sort" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">开始时间：</label>
+								<div class="col-sm-8">
+									<input id="startTime" name="startTime" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">结束时间：</label>
+								<div class="col-sm-8">
+									<input id="endTime" name="endTime" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">图片地址：</label>
+								<div class="col-sm-6">
+									<input id="img" name="img" class="form-control" type="text">
+								</div>
+								<input id="img-btn" class="btn btn-warning" type="button" value="选择图标">
+							</div>
+							<div class="form-group">
+								<input id="carId" name="carId" type="hidden">
+								<label class="col-sm-3 control-label">汽车：</label>
+								<div class="col-sm-8">
+									<input id="carName" name="carName" class="form-control" type="text"
+											style="cursor: pointer;" onclick="openCarTree()"
+											readonly="readonly" placeholder="所属汽车">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/AdverManage/adverCar/add.js">
+	</script>
+	<script type="text/javascript" src="/js/laydate/laydate.js">
+	</script>
+	<script>
+        //时间选择器
+        laydate.render({
+            elem: '#startTime'
+            ,type: 'datetime'
+        });
+        laydate.render({
+            elem: '#endTime'
+            ,type: 'datetime'
+        });
+	</script>
+</body>
+</html>

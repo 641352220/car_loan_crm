@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">是否需要登录：</label>
+								<div class="col-sm-8">
+									<select data-placeholder="请选择" name="login" id="login"
+											class="form-control chosen-select" tabindex="2"
+											style="width: 100%">
+										<!--<option value="0">请选择</option>-->
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">广告链接：</label>
+								<div class="col-sm-8">
+									<input id="adverUrl" name="adverUrl" class="form-control" type="text" onclick="kva()">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">位置：</label>
+								<div class="col-sm-8">
+									<select data-placeholder="请选择" name="adverPosition" id="adverPosition"
+											class="form-control chosen-select" tabindex="2"
+											style="width: 100%">
+										<!--<option value="0">请选择</option> -->
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">广告名：</label>
+								<div class="col-sm-8">
+									<input id="adverName" name="adverName" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">开始时间：</label>
+								<div class="col-sm-8">
+									<input id="startTime" name="startTime" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">结束时间：</label>
+								<div class="col-sm-8">
+									<input id="endTime" name="endTime" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">排序：</label>
+								<div class="col-sm-8">
+									<input id="sort" name="sort" class="form-control" type="text">
+								</div>
+							</div>
+
+							<!--<div class="form-group">-->
+								<!--<label class="col-sm-3 control-label">图片地址：</label>-->
+								<!--<div class="col-sm-8">-->
+									<!--<input id="img" name="img" class="form-control" type="text">-->
+								<!--</div>-->
+							<!--</div>-->
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">图片：</label>
+								<div class="col-sm-6">
+									<input id="img" name="img" class="form-control" type="text">
+								</div>
+								<input id="img-btn" class="btn btn-warning" type="button" value="选择图标">
+							</div>
+
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/AdverManage/adver/add.js">
+	</script>
+	<script type="text/javascript" src="/js/laydate/laydate.js">
+	</script>
+	<script>
+        //时间选择器
+        laydate.render({
+            elem: '#startTime'
+            ,type: 'datetime'
+        });
+        laydate.render({
+            elem: '#endTime'
+            ,type: 'datetime'
+        });
+	</script>
+</body>
+</html>

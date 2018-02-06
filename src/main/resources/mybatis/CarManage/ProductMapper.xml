@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.CarManage.dao.ProductDao">
+
+	<select id="get" resultType="com.bootdo.CarManage.domain.ProductDO">
+		select `car_product_id`,`business_id`,`car_product_name`,`adver`,`loan_process`,`apply_condition`,`introduce`,`sort`,`logo`,`contact_name`,`contact_phone`,`comment_num`,`comment_branch`,`platform_state`,`business_state`,`jump_type`,`jump_url`,`create_by`,`create_date`,`update_by`,`update_date` from car_product where car_product_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.CarManage.domain.ProductDO">
+		select `car_product_id`,`business_id`,`car_product_name`,`adver`,`loan_process`,`apply_condition`,`introduce`,`sort`,`logo`,`contact_name`,`contact_phone`,`comment_num`,`comment_branch`,`platform_state`
+		,`business_state`,`jump_type`,`jump_url`,`create_by`,`create_date`,`update_by`,`update_date` from car_product
+		<where>
+			<if test="businessId != null and businessId != ''"> and business_id = #{businessId} </if>
+		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by car_product_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from car_product
+		<where>
+			<if test="businessId != null and businessId != ''"> and business_id = #{businessId} </if>
+		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.CarManage.domain.ProductDO" useGeneratedKeys="true" keyProperty="carProductId">
+		insert into car_product
+		(
+			`business_id`, 
+			`car_product_name`, 
+			`adver`, 
+			`loan_process`, 
+			`apply_condition`, 
+			`introduce`, 
+			`sort`, 
+			`logo`, 
+			`contact_name`, 
+			`contact_phone`, 
+			`comment_num`, 
+			`comment_branch`, 
+			`platform_state`, 
+			`business_state`,
+			`jump_type`,
+			`jump_url`,
+			`create_by`, 
+			`create_date`, 
+			`update_by`, 
+			`update_date`
+		)
+		values
+		(
+			#{businessId}, 
+			#{carProductName}, 
+			#{adver}, 
+			#{loanProcess}, 
+			#{applyCondition}, 
+			#{introduce}, 
+			#{sort}, 
+			#{logo}, 
+			#{contactName}, 
+			#{contactPhone}, 
+			#{commentNum}, 
+			#{commentBranch}, 
+			#{platformState}, 
+			#{businessState},
+			#{jumpType},
+			#{jumpUrl},
+			#{createBy}, 
+			#{createDate}, 
+			#{updateBy}, 
+			#{updateDate}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.CarManage.domain.ProductDO">
+		update car_product
+		<set>
+			<if test="businessId != null">
+				business_id = #{businessId,jdbcType=INTEGER},
+			</if>
+			<if test="carProductName != null">
+				car_product_name = #{carProductName,jdbcType=VARCHAR},
+			</if>
+			<if test="adver != null">
+				adver = #{adver,jdbcType=VARCHAR},
+			</if>
+			<if test="loanProcess != null">
+				loan_process = #{loanProcess,jdbcType=VARCHAR},
+			</if>
+			<if test="applyCondition != null">
+				apply_condition = #{applyCondition,jdbcType=VARCHAR},
+			</if>
+			<if test="introduce != null">
+				introduce = #{introduce,jdbcType=VARCHAR},
+			</if>
+			<if test="sort != null">
+				sort = #{sort,jdbcType=INTEGER},
+			</if>
+			<if test="logo != null">
+				logo = #{logo,jdbcType=VARCHAR},
+			</if>
+			<if test="contactName != null">
+				contact_name = #{contactName,jdbcType=VARCHAR},
+			</if>
+			<if test="contactPhone != null">
+				contact_phone = #{contactPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="commentNum != null">
+				comment_num = #{commentNum,jdbcType=INTEGER},
+			</if>
+			<if test="commentBranch != null">
+				comment_branch = #{commentBranch,jdbcType=INTEGER},
+			</if>
+			<if test="platformState != null">
+				platform_state = #{platformState,jdbcType=INTEGER},
+			</if>
+			<if test="businessState != null">
+				business_state = #{businessState,jdbcType=INTEGER},
+			</if>
+			<if test="jumpType != null">
+				jump_type = #{jumpType,jdbcType=INTEGER},
+			</if>
+			<if test="jumpUrl != null">
+				jump_url = #{jumpUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="createBy != null">
+				create_by = #{createBy,jdbcType=INTEGER},
+			</if>
+			<if test="createDate != null">
+				create_date = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateBy != null">
+				update_by = #{updateBy,jdbcType=BIGINT},
+			</if>
+			<if test="updateDate != null">
+				update_date = #{updateDate,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where car_product_id = #{carProductId,jdbcType=INTEGER}
+	</update>
+
+	<update id="updateComment">
+		update car_product SET comment_num = comment_num + 1,comment_branch = #{commentBranch}
+		where `car_product_id` = #{carProductId,jdbcType=INTEGER}
+	</update>
+	
+	<delete id="remove">
+		delete from car_product where car_product_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from car_product where car_product_id in 
+		<foreach item="carProductId" collection="array" open="(" separator="," close=")">
+			#{carProductId}
+		</foreach>
+	</delete>
+
+
+	<select id="nameList" resultType="com.bootdo.CarManage.domain.ProductDO">
+		select `car_product_id`,`car_product_name` from car_product where platform_state = 1 AND business_state = 1
+		<if test="businessId != null and businessId != 0 and businessId != 11"> AND business_id = #{businessId} </if>
+	</select>
+</mapper>

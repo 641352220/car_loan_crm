@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.AppManage.dao.HomePageModeDao">
+
+	<select id="get" resultType="com.bootdo.AppManage.domain.HomePageModeDO">
+		select `home_page_mode_id`,`name`,`logo_no_click`,`logo_click`,`click`,`position`,`jump_type`,`jump_url`,`brand_id`,`min`,`max`,`sort`,`state`,`create_by`,`create_date`,`update_by`,`update_date` from app_home_page_mode where home_page_mode_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.AppManage.domain.HomePageModeDO">
+		select `home_page_mode_id`,`name`,`logo_no_click`,`logo_click`,`click`,`position`,`jump_type`,`jump_url`,`brand_id`,`min`,`max`,`sort`,`state`,`create_by`,`create_date`,`update_by`,`update_date` from app_home_page_mode
+        <where>  
+		  		  <if test="homePageModeId != null and homePageModeId != ''"> and home_page_mode_id = #{homePageModeId} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="logoNoClick != null and logoNoClick != ''"> and logo_no_click = #{logoNoClick} </if>
+		  		  <if test="logoClick != null and logoClick != ''"> and logo_click = #{logoClick} </if>
+		  		  <if test="click != null and click != ''"> and click = #{click} </if>
+		  		  <if test="position != null and position != ''"> and position = #{position} </if>
+		  		  <if test="jumpType != null and jumpType != ''"> and jump_type = #{jumpType} </if>
+		  		  <if test="brandId != null and brandId != ''"> and brand_id = #{brandId} </if>
+		  		  <if test="min != null and min != ''"> and min = #{min} </if>
+		  		  <if test="max != null and max != ''"> and max = #{max} </if>
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		  <if test="state != null and state != ''"> and state = #{state} </if>
+		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
+		  		  <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="updateDate != null and updateDate != ''"> and update_date = #{updateDate} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by home_page_mode_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from app_home_page_mode
+		 <where>  
+		  		  <if test="homePageModeId != null and homePageModeId != ''"> and home_page_mode_id = #{homePageModeId} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="logoNoClick != null and logoNoClick != ''"> and logo_no_click = #{logoNoClick} </if>
+		  		  <if test="logoClick != null and logoClick != ''"> and logo_click = #{logoClick} </if>
+		  		  <if test="click != null and click != ''"> and click = #{click} </if>
+		  		  <if test="position != null and position != ''"> and position = #{position} </if>
+		  		  <if test="jumpType != null and jumpType != ''"> and jump_type = #{jumpType} </if>
+		  		  <if test="brandId != null and brandId != ''"> and brand_id = #{brandId} </if>
+		  		  <if test="min != null and min != ''"> and min = #{min} </if>
+		  		  <if test="max != null and max != ''"> and max = #{max} </if>
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		  <if test="state != null and state != ''"> and state = #{state} </if>
+		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
+		  		  <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="updateDate != null and updateDate != ''"> and update_date = #{updateDate} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.AppManage.domain.HomePageModeDO">
+		insert into app_home_page_mode
+		(
+			`home_page_mode_id`, 
+			`name`, 
+			`logo_no_click`, 
+			`logo_click`, 
+			`click`, 
+			`position`, 
+			`jump_type`,
+			`jump_url`,
+			`brand_id`, 
+			`min`, 
+			`max`, 
+			`sort`, 
+			`state`, 
+			`create_by`, 
+			`create_date`, 
+			`update_by`, 
+			`update_date`
+		)
+		values
+		(
+			#{homePageModeId}, 
+			#{name}, 
+			#{logoNoClick}, 
+			#{logoClick}, 
+			#{click}, 
+			#{position}, 
+			#{jumpType},
+			#{jumpUrl},
+			#{brandId}, 
+			#{min}, 
+			#{max}, 
+			#{sort}, 
+			#{state}, 
+			#{createBy}, 
+			#{createDate}, 
+			#{updateBy}, 
+			#{updateDate}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.AppManage.domain.HomePageModeDO">
+		update app_home_page_mode 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="logoNoClick != null">`logo_no_click` = #{logoNoClick}, </if>
+			<if test="logoClick != null">`logo_click` = #{logoClick}, </if>
+			<if test="click != null">`click` = #{click}, </if>
+			<if test="position != null">`position` = #{position}, </if>
+			<if test="jumpType != null">`jump_type` = #{jumpType}, </if>
+			<if test="jumpUrl != null">`jump_url` = #{jumpUrl}, </if>
+			<if test="brandId != null">`brand_id` = #{brandId}, </if>
+			<if test="min != null">`min` = #{min}, </if>
+			<if test="max != null">`max` = #{max}, </if>
+			<if test="sort != null">`sort` = #{sort}, </if>
+			<if test="state != null">`state` = #{state}, </if>
+			<if test="createBy != null">`create_by` = #{createBy}, </if>
+			<if test="createDate != null">`create_date` = #{createDate}, </if>
+			<if test="updateBy != null">`update_by` = #{updateBy}, </if>
+			<if test="updateDate != null">`update_date` = #{updateDate}</if>
+		</set>
+		where home_page_mode_id = #{homePageModeId}
+	</update>
+	
+	<delete id="remove">
+		delete from app_home_page_mode where home_page_mode_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from app_home_page_mode where home_page_mode_id in 
+		<foreach item="homePageModeId" collection="array" open="(" separator="," close=")">
+			#{homePageModeId}
+		</foreach>
+	</delete>
+
+</mapper>

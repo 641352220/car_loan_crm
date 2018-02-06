@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.AppManage.dao.EditionDao">
+
+	<select id="get" resultType="com.bootdo.AppManage.domain.EditionDO">
+		select `id`,`in_edition`,`out_edition`,`url`,`remarks`,`channel`,`update_type` from app_edition where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.AppManage.domain.EditionDO">
+		select `id`,`in_edition`,`out_edition`,`url`,`remarks`,`channel`,`update_type` from app_edition
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="inEdition != null and inEdition != ''"> and in_edition = #{inEdition} </if>
+		  		  <if test="outEdition != null and outEdition != ''"> and out_edition = #{outEdition} </if>
+		  		  <if test="url != null and url != ''"> and url = #{url} </if>
+		  		  <if test="remarks != null and remarks != ''"> and remarks = #{remarks} </if>
+		  		  <if test="channel != null and channel != ''"> and channel = #{channel} </if>
+		  		  <if test="updateType != null and updateType != ''"> and update_type = #{updateType} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from app_edition
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="inEdition != null and inEdition != ''"> and in_edition = #{inEdition} </if>
+		  		  <if test="outEdition != null and outEdition != ''"> and out_edition = #{outEdition} </if>
+		  		  <if test="url != null and url != ''"> and url = #{url} </if>
+		  		  <if test="remarks != null and remarks != ''"> and remarks = #{remarks} </if>
+		  		  <if test="channel != null and channel != ''"> and channel = #{channel} </if>
+		  		  <if test="updateType != null and updateType != ''"> and update_type = #{updateType} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.AppManage.domain.EditionDO" useGeneratedKeys="true" keyProperty="id">
+		insert into app_edition
+		(
+			`in_edition`, 
+			`out_edition`, 
+			`url`, 
+			`remarks`, 
+			`channel`, 
+			`update_type`
+		)
+		values
+		(
+			#{inEdition}, 
+			#{outEdition}, 
+			#{url}, 
+			#{remarks}, 
+			#{channel}, 
+			#{updateType}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.AppManage.domain.EditionDO">
+		update app_edition 
+		<set>
+			<if test="inEdition != null">`in_edition` = #{inEdition}, </if>
+			<if test="outEdition != null">`out_edition` = #{outEdition}, </if>
+			<if test="url != null">`url` = #{url}, </if>
+			<if test="remarks != null">`remarks` = #{remarks}, </if>
+			<if test="channel != null">`channel` = #{channel}, </if>
+			<if test="updateType != null">`update_type` = #{updateType}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from app_edition where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from app_edition where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.CarManage.dao.ProductInformationCarDao">
+
+	<select id="get" resultType="com.bootdo.CarManage.domain.ProductInformationCarDO">
+		select `business_id`,`car_product_information_id`,`car_id`,`car_model_id`,`car_product_id`,`car_price`
+		,`down_payments_min`,`term_max`,`rate`,`sort` from car_product_information_car
+		where car_product_information_id = #{carProductInformationId} AND car_id = #{carId}
+	</select>
+
+	<select id="list" resultType="com.bootdo.CarManage.domain.ProductInformationCarDO">
+		select `business_id`,`car_product_information_id`,`car_id`,`car_model_id`,`car_product_id`,`car_price`,`down_payments_min`,`term_max`,`rate`,`sort` from car_product_information_car
+        <where>  
+		  		  <if test="businessId != null and businessId != ''"> and business_id = #{businessId} </if>
+		  		  <if test="carProductInformationId != null and carProductInformationId != ''"> and car_product_information_id = #{carProductInformationId} </if>
+		  		  <if test="carId != null and carId != ''"> and car_id = #{carId} </if>
+		  		  <if test="carModelId != null and carModelId != ''"> and car_model_id = #{carModelId} </if>
+		  		  <if test="carProductId != null and carProductId != ''"> and car_product_id = #{carProductId} </if>
+		  		  <if test="carPrice != null and carPrice != ''"> and car_price = #{carPrice} </if>
+		  		  <if test="downPaymentsMin != null and downPaymentsMin != ''"> and down_payments_min = #{downPaymentsMin} </if>
+		  		  <if test="termMax != null and termMax != ''"> and term_max = #{termMax} </if>
+		  		  <if test="rate != null and rate != ''"> and rate = #{rate} </if>
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by business_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from car_product_information_car
+		 <where>  
+		  		  <if test="businessId != null and businessId != ''"> and business_id = #{businessId} </if>
+		  		  <if test="carProductInformationId != null and carProductInformationId != ''"> and car_product_information_id = #{carProductInformationId} </if>
+		  		  <if test="carId != null and carId != ''"> and car_id = #{carId} </if>
+		  		  <if test="carModelId != null and carModelId != ''"> and car_model_id = #{carModelId} </if>
+		  		  <if test="carProductId != null and carProductId != ''"> and car_product_id = #{carProductId} </if>
+		  		  <if test="carPrice != null and carPrice != ''"> and car_price = #{carPrice} </if>
+		  		  <if test="downPaymentsMin != null and downPaymentsMin != ''"> and down_payments_min = #{downPaymentsMin} </if>
+		  		  <if test="termMax != null and termMax != ''"> and term_max = #{termMax} </if>
+		  		  <if test="rate != null and rate != ''"> and rate = #{rate} </if>
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.CarManage.domain.ProductInformationCarDO">
+		insert into car_product_information_car
+		(
+			`business_id`, 
+			`car_product_information_id`, 
+			`car_id`, 
+			`car_model_id`, 
+			`car_product_id`, 
+			`car_price`, 
+			`down_payments_min`, 
+			`term_max`, 
+			`rate`, 
+			`sort`
+		)
+		values
+		(
+			#{businessId}, 
+			#{carProductInformationId}, 
+			#{carId}, 
+			#{carModelId}, 
+			#{carProductId}, 
+			#{carPrice}, 
+			#{downPaymentsMin}, 
+			#{termMax}, 
+			#{rate}, 
+			#{sort}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.CarManage.domain.ProductInformationCarDO">
+		update car_product_information_car 
+		<set>
+			<if test="carModelId != null">`car_model_id` = #{carModelId}, </if>
+			<if test="carProductId != null">`car_product_id` = #{carProductId}, </if>
+			<if test="carPrice != null">`car_price` = #{carPrice}, </if>
+			<if test="downPaymentsMin != null">`down_payments_min` = #{downPaymentsMin}, </if>
+			<if test="termMax != null">`term_max` = #{termMax}, </if>
+			<if test="rate != null">`rate` = #{rate}, </if>
+			<if test="sort != null">`sort` = #{sort}</if>
+		</set>
+		where car_product_information_id = #{carProductInformationId} AND car_id = #{carId}
+	</update>
+	
+	<delete id="remove">
+		delete from car_product_information_car where car_product_information_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from car_product_information_car where business_id in 
+		<foreach item="businessId" collection="array" open="(" separator="," close=")">
+			#{businessId}
+		</foreach>
+	</delete>
+
+
+	<update id="updateCarPrice" parameterType="map">
+		update car_product_information_car SET `car_price` = #{carPrice} where car_id = #{carId}
+	</update>
+
+	<update id="updateDp" parameterType="map">
+		update car_product_information_car SET `down_payments_min` = #{dp} WHERE car_product_information_id = #{carProductInformationId}
+	</update>
+
+	<update id="updateTerm" parameterType="map">
+		update car_product_information_car SET `term_max` = #{term},`rate` = #{rate} WHERE car_product_information_id = #{carProductInformationId}
+	</update>
+
+</mapper>

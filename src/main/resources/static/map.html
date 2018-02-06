@@ -1,0 +1,49 @@
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+		body,
+		html,
+		#allmap {
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+			margin: 0;
+			font-family: "微软雅黑";
+		}
+	</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=rmu7WjzHZjmq75r8kdwNypvWKWYz4q7W"></script>
+	<title>单击获取点击的经纬度</title>
+</head>
+
+<body>
+<div id="allmap"></div>
+</body>
+
+</html>
+<script src="./js/jq/jquery.js"></script>
+<script type="text/javascript">
+    // 百度地图API功能
+    var map = new BMap.Map("allmap");
+    map.centerAndZoom("重庆", 12);
+    var geoc = new BMap.Geocoder();
+
+    setTimeout(function(){
+        map.setZoom(14);
+    }, 2000);  //2秒后放大到14级
+    map.enableScrollWheelZoom(true);
+
+    //单击获取点击的经纬度
+    map.addEventListener("click", function(e) {
+//        alert(e.point.lng + "," + e.point.lat);
+        geoc.getLocation(e.point, function(rs){
+            var addComp = rs.addressComponents;
+//            alert(addComp.province + ", " + addComp.city + ", " + addComp.district );
+            parent.loadAdress(e.point.lng,e.point.lat,addComp.province,addComp.city,addComp.district);
+            var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+            parent.layer.close(index);
+        });
+    });
+</script>

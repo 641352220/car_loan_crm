@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.CarManage.dao.CarDao">
+
+	<select id="get" resultType="com.bootdo.CarManage.domain.CarDO">
+		select `car_id`,`car_model_id`,`subsidiary_id`,`brand_id`,`style_name`,`model_name`,`subsidiary_name`,`brand_name`,`logo`,`price`,`sale_price`,`year_type`,`production_state`,`sale_state`,`size_type`,`oil_consumption`,`displacement`,`create_by`,`create_date`,`update_by`,`update_date` from car_car where car_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.CarManage.domain.CarDO">
+		select `car_id`,`car_model_id`,`subsidiary_id`,`brand_id`,`style_name`,`model_name`,`subsidiary_name`,`brand_name`,`logo`,`price`,`sale_price`,`year_type`,`production_state`,`sale_state`,`size_type`,`oil_consumption`,`displacement`,`create_by`,`create_date`,`update_by`,`update_date` from car_car
+        <where>  
+		  		  <if test="carId != null and carId != ''"> and car_id = #{carId} </if>
+		  		  <if test="carModelId != null and carModelId != ''"> and car_model_id = #{carModelId} </if>
+		  		  <if test="subsidiaryId != null and subsidiaryId != ''"> and subsidiary_id = #{subsidiaryId} </if>
+		  		  <if test="brandId != null and brandId != ''"> and brand_id = #{brandId} </if>
+		  		  <if test="styleName != null and styleName != ''"> and style_name = #{styleName} </if>
+		  		  <if test="modelName != null and modelName != ''"> and model_name = #{modelName} </if>
+		  		  <if test="subsidiaryName != null and subsidiaryName != ''"> and subsidiary_name = #{subsidiaryName} </if>
+		  		  <if test="brandName != null and brandName != ''"> and brand_name = #{brandName} </if>
+		  		  <if test="logo != null and logo != ''"> and logo = #{logo} </if>
+		  		  <if test="price != null and price != ''"> and price = #{price} </if>
+		  		  <if test="salePrice != null and salePrice != ''"> and sale_price = #{salePrice} </if>
+		  		  <if test="yearType != null and yearType != ''"> and year_type = #{yearType} </if>
+		  		  <if test="productionState != null and productionState != ''"> and production_state = #{productionState} </if>
+		  		  <if test="saleState != null and saleState != ''"> and sale_state = #{saleState} </if>
+		  		  <if test="sizeType != null and sizeType != ''"> and size_type = #{sizeType} </if>
+		  		  <if test="oilConsumption != null and oilConsumption != ''"> and oil_consumption = #{oilConsumption} </if>
+		  		  <if test="displacement != null and displacement != ''"> and displacement = #{displacement} </if>
+		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
+		  		  <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="updateDate != null and updateDate != ''"> and update_date = #{updateDate} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by car_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from car_car
+		 <where>  
+		  		  <if test="carId != null and carId != ''"> and car_id = #{carId} </if>
+		  		  <if test="carModelId != null and carModelId != ''"> and car_model_id = #{carModelId} </if>
+		  		  <if test="subsidiaryId != null and subsidiaryId != ''"> and subsidiary_id = #{subsidiaryId} </if>
+		  		  <if test="brandId != null and brandId != ''"> and brand_id = #{brandId} </if>
+		  		  <if test="styleName != null and styleName != ''"> and style_name = #{styleName} </if>
+		  		  <if test="modelName != null and modelName != ''"> and model_name = #{modelName} </if>
+		  		  <if test="subsidiaryName != null and subsidiaryName != ''"> and subsidiary_name = #{subsidiaryName} </if>
+		  		  <if test="brandName != null and brandName != ''"> and brand_name = #{brandName} </if>
+		  		  <if test="logo != null and logo != ''"> and logo = #{logo} </if>
+		  		  <if test="price != null and price != ''"> and price = #{price} </if>
+		  		  <if test="salePrice != null and salePrice != ''"> and sale_price = #{salePrice} </if>
+		  		  <if test="yearType != null and yearType != ''"> and year_type = #{yearType} </if>
+		  		  <if test="productionState != null and productionState != ''"> and production_state = #{productionState} </if>
+		  		  <if test="saleState != null and saleState != ''"> and sale_state = #{saleState} </if>
+		  		  <if test="sizeType != null and sizeType != ''"> and size_type = #{sizeType} </if>
+		  		  <if test="oilConsumption != null and oilConsumption != ''"> and oil_consumption = #{oilConsumption} </if>
+		  		  <if test="displacement != null and displacement != ''"> and displacement = #{displacement} </if>
+		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
+		  		  <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="updateDate != null and updateDate != ''"> and update_date = #{updateDate} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.CarManage.domain.CarDO" useGeneratedKeys="true" keyProperty="carId">
+		insert into car_car
+		(
+			`car_model_id`, 
+			`subsidiary_id`, 
+			`brand_id`, 
+			`style_name`, 
+			`model_name`, 
+			`subsidiary_name`, 
+			`brand_name`, 
+			`logo`, 
+			`price`, 
+			`sale_price`, 
+			`year_type`, 
+			`production_state`, 
+			`sale_state`, 
+			`size_type`, 
+			`oil_consumption`, 
+			`displacement`, 
+			`create_by`, 
+			`create_date`, 
+			`update_by`, 
+			`update_date`
+		)
+		values
+		(
+			#{carModelId}, 
+			#{subsidiaryId}, 
+			#{brandId}, 
+			#{styleName}, 
+			#{modelName}, 
+			#{subsidiaryName}, 
+			#{brandName}, 
+			#{logo}, 
+			#{price}, 
+			#{salePrice}, 
+			#{yearType}, 
+			#{productionState}, 
+			#{saleState}, 
+			#{sizeType}, 
+			#{oilConsumption}, 
+			#{displacement}, 
+			#{createBy}, 
+			#{createDate}, 
+			#{updateBy}, 
+			#{updateDate}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.CarManage.domain.CarDO">
+		update car_car 
+		<set>
+			<if test="carModelId != null">`car_model_id` = #{carModelId}, </if>
+			<if test="subsidiaryId != null">`subsidiary_id` = #{subsidiaryId}, </if>
+			<if test="brandId != null">`brand_id` = #{brandId}, </if>
+			<if test="styleName != null">`style_name` = #{styleName}, </if>
+			<if test="modelName != null">`model_name` = #{modelName}, </if>
+			<if test="subsidiaryName != null">`subsidiary_name` = #{subsidiaryName}, </if>
+			<if test="brandName != null">`brand_name` = #{brandName}, </if>
+			<if test="logo != null">`logo` = #{logo}, </if>
+			<if test="price != null">`price` = #{price}, </if>
+			<if test="salePrice != null">`sale_price` = #{salePrice}, </if>
+			<if test="yearType != null">`year_type` = #{yearType}, </if>
+			<if test="productionState != null">`production_state` = #{productionState}, </if>
+			<if test="saleState != null">`sale_state` = #{saleState}, </if>
+			<if test="sizeType != null">`size_type` = #{sizeType}, </if>
+			<if test="oilConsumption != null">`oil_consumption` = #{oilConsumption}, </if>
+			<if test="displacement != null">`displacement` = #{displacement}, </if>
+			<if test="createBy != null">`create_by` = #{createBy}, </if>
+			<if test="createDate != null">`create_date` = #{createDate}, </if>
+			<if test="updateBy != null">`update_by` = #{updateBy}, </if>
+			<if test="updateDate != null">`update_date` = #{updateDate}</if>
+		</set>
+		where car_id = #{carId}
+	</update>
+	
+	<delete id="remove">
+		delete from car_car where car_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from car_car where car_id in 
+		<foreach item="carId" collection="array" open="(" separator="," close=")">
+			#{carId}
+		</foreach>
+	</delete>
+
+
+	<select id="CarDOListByCarModelId" resultType="com.bootdo.CarManage.domain.CarDO">
+		SELECT a.`car_id`,a.`style_name`,a.`car_model_id` FROM car_car as a
+		WHERE  a.car_model_id = #{carModelId}
+	</select>
+
+	<select id="CarDOListByCarModelIdByFA" resultType="com.bootdo.CarManage.domain.CarDO">
+		SELECT DISTINCT a.`car_id`,a.`style_name`,a.`car_model_id` FROM car_car as a,car_offer as b
+		WHERE a.car_id = b.car_id AND a.car_model_id = #{carModelId}
+	</select>
+
+	<select id="CarDOListByCarModelIdAndCpii" resultType="com.bootdo.CarManage.domain.CarDO">
+		select `car_id`,`style_name`,`car_model_id` from car_car where car_model_id = #{carModelId}
+		AND car_id in (SELECT car_id FROM car_product_information_car WHERE car_product_information_id = #{carProductInformationId})
+	</select>
+
+	<select id="listById" resultType="com.bootdo.CarManage.domain.CarDO">
+		SELECT DISTINCT a.*,b.car_offer as priceMin FROM car_car as a,car_offer as b
+		WHERE a.car_id = b.car_id AND (a.car_id IN (${carIdQuery}) OR a.car_model_id IN (${carIdQuery}))
+	</select>
+</mapper>

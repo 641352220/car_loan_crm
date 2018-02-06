@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="user_id" name="user_id" th:value="${information.user_id}"  type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">姓名：</label>
+								<div class="col-sm-8">
+									<input id="name" name="name" th:value="${information.name}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">身份证：</label>
+								<div class="col-sm-8">
+									<input id="idNum" name="idNum" th:value="${information.idNum}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">上牌省份：</label>
+								<div class="col-sm-8">
+									<input id="carProvince" name="carProvince" th:value="${information.carProvince}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">上牌城市：</label>
+								<div class="col-sm-8">
+									<input id="carCity" name="carCity" th:value="${information.carCity}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">上牌区县：</label>
+								<div class="col-sm-8">
+									<input id="carArea" name="carArea" th:value="${information.carArea}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">居住省份：</label>
+								<div class="col-sm-8">
+									<input id="liveProvince" name="liveProvince" th:value="${information.liveProvince}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">居住城市：</label>
+								<div class="col-sm-8">
+									<input id="liveCity" name="liveCity" th:value="${information.liveCity}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">居住区县：</label>
+								<div class="col-sm-8">
+									<input id="liveArea" name="liveArea" th:value="${information.liveArea}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">居住详细地址：</label>
+								<div class="col-sm-8">
+									<input id="liveAddress" name="liveAddress" th:value="${information.liveAddress}" class="form-control" type="text">
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/UserManage/information/add.js">
+	</script>
+</body>
+</html>

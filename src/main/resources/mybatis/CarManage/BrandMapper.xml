@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.CarManage.dao.BrandDao">
+
+	<select id="get" resultType="com.bootdo.CarManage.domain.BrandDO">
+		select `brand_id`,`brand_name`,`initial`,`logo`,`is_it_hot`,`create_by`,`create_date`,`update_by`,`update_date` from car_brand where brand_id = #{value}
+	</select>
+
+	<select id="BrandDOList" resultType="com.bootdo.CarManage.domain.BrandDO">
+		select `brand_id`,`brand_name` from car_brand where brand_id > 0
+	</select>
+
+	<select id="BrandDOListByFA" resultType="com.bootdo.CarManage.domain.BrandDO">
+		select a.`brand_id`,a.`brand_name` from car_brand as a where a.brand_id > 0 AND a.brand_id in (SELECT b.brand_id FROM car_car as b,car_offer as c WHERE b.car_id = c.car_id)
+	</select>
+
+	<select id="listByBusinessId" resultType="com.bootdo.CarManage.domain.BrandDO">
+		SELECT a.*,b.business_id as sf FROM car_brand as a LEFT JOIN business_car as b ON b.brand_id = a.brand_id AND b.business_id = #{businessId} WHERE a.brand_id > 0
+	</select>
+
+	<select id="BrandDOListByCpii" resultType="com.bootdo.CarManage.domain.BrandDO">
+		SELECT * FROM car_brand WHERE brand_id in (SELECT a.brand_id FROM car_car as a,car_product_information_car as b WHERE b.car_product_information_id = #{carProductInformationId} AND a.car_id = b.car_id)
+	</select>
+
+	<select id="list" resultType="com.bootdo.CarManage.domain.BrandDO">
+		select `brand_id`,`brand_name`,`initial`,`logo`,`is_it_hot`,`create_by`,`create_date`,`update_by`,`update_date` from car_brand
+        <where>
+			brand_id > 0
+		  		  <if test="brandId != null and brandId != ''"> and brand_id = #{brandId} </if>
+		  		  <if test="brandName != null and brandName != ''"> and brand_name = #{brandName} </if>
+		  		  <if test="initial != null and initial != ''"> and initial = #{initial} </if>
+		  		  <if test="logo != null and logo != ''"> and logo = #{logo} </if>
+		  		  <if test="isItHot != null and isItHot != ''"> and is_it_hot = #{isItHot} </if>
+		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
+		  		  <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="updateDate != null and updateDate != ''"> and update_date = #{updateDate} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by brand_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from car_brand
+		 <where>
+			 brand_id > 0
+		  		  <if test="brandId != null and brandId != ''"> and brand_id = #{brandId} </if>
+		  		  <if test="brandName != null and brandName != ''"> and brand_name = #{brandName} </if>
+		  		  <if test="initial != null and initial != ''"> and initial = #{initial} </if>
+		  		  <if test="logo != null and logo != ''"> and logo = #{logo} </if>
+		  		  <if test="isItHot != null and isItHot != ''"> and is_it_hot = #{isItHot} </if>
+		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
+		  		  <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="updateDate != null and updateDate != ''"> and update_date = #{updateDate} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.CarManage.domain.BrandDO" useGeneratedKeys="true" keyProperty="brandId">
+		insert into car_brand
+		(
+			`brand_name`, 
+			`initial`, 
+			`logo`, 
+			`is_it_hot`, 
+			`create_by`, 
+			`create_date`, 
+			`update_by`, 
+			`update_date`
+		)
+		values
+		(
+			#{brandName}, 
+			#{initial}, 
+			#{logo}, 
+			#{isItHot}, 
+			#{createBy}, 
+			#{createDate}, 
+			#{updateBy}, 
+			#{updateDate}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.CarManage.domain.BrandDO">
+		update car_brand 
+		<set>
+			<if test="brandName != null">`brand_name` = #{brandName}, </if>
+			<if test="initial != null">`initial` = #{initial}, </if>
+			<if test="logo != null">`logo` = #{logo}, </if>
+			<if test="isItHot != null">`is_it_hot` = #{isItHot}, </if>
+			<if test="createBy != null">`create_by` = #{createBy}, </if>
+			<if test="createDate != null">`create_date` = #{createDate}, </if>
+			<if test="updateBy != null">`update_by` = #{updateBy}, </if>
+			<if test="updateDate != null">`update_date` = #{updateDate}</if>
+		</set>
+		where brand_id = #{brandId}
+	</update>
+	
+	<delete id="remove">
+		delete from car_brand where brand_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from car_brand where brand_id in 
+		<foreach item="brandId" collection="array" open="(" separator="," close=")">
+			#{brandId}
+		</foreach>
+	</delete>
+
+</mapper>

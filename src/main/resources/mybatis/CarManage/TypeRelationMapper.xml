@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.CarManage.dao.TypeRelationDao">
+
+	<select id="get" resultType="com.bootdo.CarManage.domain.TypeRelationDO">
+		select `car_id`,`car_type_id`,`adver`,`car_product_id`,`car_product_information_id`
+		from car_type_relation where car_id = #{carId} AND car_type_id = #{carTypeId}
+	</select>
+
+	<select id="list" resultType="com.bootdo.CarManage.domain.TypeRelationDO">
+		SELECT a.*,b.car_type_name as carTypeName,CONCAT(c.brand_name,c.brand_name,c.style_name) as carName,d.car_product_name as carProductName,e.car_product_information_name as carProductInformationName
+		FROM car_type_relation as a,car_type as b,car_car as c,car_product as d,car_product_information as e
+		WHERE a.car_type_id = b.car_type_id AND a.car_id = c.car_id AND a.car_product_id = d.car_product_id AND a.car_product_information_id = e.car_product_information_id
+		<if test="brandId != null and brandId != ''"> and c.brand_id = #{brandId} </if>
+		<if test="carTypeId != null and carTypeId != ''"> and a.car_type_id = #{carTypeId} </if>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by car_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		SELECT count(1)
+		FROM car_type_relation as a,car_type as b,car_car as c,car_product as d,car_product_information as e
+		WHERE a.car_type_id = b.car_type_id AND a.car_id = c.car_id AND a.car_product_id = d.car_product_id AND a.car_product_information_id = e.car_product_information_id
+		<if test="brandId != null and brandId != ''"> and c.brand_id = #{brandId} </if>
+		<if test="carTypeId != null and carTypeId != ''"> and a.car_type_id = #{carTypeId} </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.CarManage.domain.TypeRelationDO">
+		insert into car_type_relation
+		(
+			`car_id`, 
+			`car_type_id`, 
+			`adver`,
+			`car_product_id`,
+			`car_product_information_id`
+		)
+		values
+		(
+			#{carId}, 
+			#{carTypeId}, 
+			#{adver},
+			#{carProductId},
+			#{carProductInformationId}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.CarManage.domain.TypeRelationDO">
+		update car_type_relation 
+		<set>
+			<if test="carTypeId != null">`car_type_id` = #{carTypeId}, </if>
+			<if test="adver != null">`adver` = #{adver}</if>
+			<if test="carProductId != null">`car_product_id` = #{carProductId},</if>
+			<if test="carProductInformationId != null">`car_product_information_id` = #{carProductInformationId}</if>
+		</set>
+		where car_id = #{carId}
+	</update>
+	
+	<delete id="remove">
+		delete from car_type_relation where car_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from car_type_relation where car_id in 
+		<foreach item="carId" collection="array" open="(" separator="," close=")">
+			#{carId}
+		</foreach>
+	</delete>
+
+</mapper>

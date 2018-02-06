@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.AppManage.dao.FeedbackDao">
+
+	<select id="get" resultType="com.bootdo.AppManage.domain.FeedbackDO">
+		select `feedback_id`,`feedback_content`,`time`,`user_id`,`channel` from app_feedback where feedback_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.AppManage.domain.FeedbackDO">
+		select `feedback_id`,`feedback_content`,`time`,`user_id`,`channel` from app_feedback
+        <where>  
+		  		  <if test="feedbackId != null and feedbackId != ''"> and feedback_id = #{feedbackId} </if>
+		  		  <if test="feedbackContent != null and feedbackContent != ''"> and feedback_content = #{feedbackContent} </if>
+		  		  <if test="time != null and time != ''"> and time = #{time} </if>
+		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+		  		  <if test="channel != null and channel != ''"> and channel = #{channel} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by feedback_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from app_feedback
+		 <where>  
+		  		  <if test="feedbackId != null and feedbackId != ''"> and feedback_id = #{feedbackId} </if>
+		  		  <if test="feedbackContent != null and feedbackContent != ''"> and feedback_content = #{feedbackContent} </if>
+		  		  <if test="time != null and time != ''"> and time = #{time} </if>
+		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+		  		  <if test="channel != null and channel != ''"> and channel = #{channel} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.AppManage.domain.FeedbackDO" useGeneratedKeys="true" keyProperty="feedbackId">
+		insert into app_feedback
+		(
+			`feedback_content`, 
+			`time`, 
+			`user_id`, 
+			`channel`
+		)
+		values
+		(
+			#{feedbackContent}, 
+			#{time}, 
+			#{userId}, 
+			#{channel}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.AppManage.domain.FeedbackDO">
+		update app_feedback 
+		<set>
+			<if test="feedbackContent != null">`feedback_content` = #{feedbackContent}, </if>
+			<if test="time != null">`time` = #{time}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="channel != null">`channel` = #{channel}</if>
+		</set>
+		where feedback_id = #{feedbackId}
+	</update>
+	
+	<delete id="remove">
+		delete from app_feedback where feedback_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from app_feedback where feedback_id in 
+		<foreach item="feedbackId" collection="array" open="(" separator="," close=")">
+			#{feedbackId}
+		</foreach>
+	</delete>
+
+</mapper>

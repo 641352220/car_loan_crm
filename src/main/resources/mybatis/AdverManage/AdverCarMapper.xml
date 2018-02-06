@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.AdverManage.dao.AdverCarDao">
+
+	<select id="get" resultType="com.bootdo.AdverManage.domain.AdverCarDO">
+		select a.`adver_car_id`,a.`name`,a.`img`,a.`type`,a.`url`,a.`car_product_id`,a.`car_product_information_id`,a.`car_id`
+		,a.`sort`,a.`state`,a.`start_time`,a.`end_time`,a.`create_by`,a.`create_date`,a.`update_by`,a.`update_date`,
+		CONCAT(b.brand_name,b.model_name,b.style_name) as carName
+		from adver_car as a
+		LEFT JOIN car_car as b ON a.car_id = b.car_id
+		where a.adver_car_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.AdverManage.domain.AdverCarDO">
+		select a.`adver_car_id`,a.`name`,a.`img`,a.`type`,a.`url`,a.`car_product_id`,a.`car_product_information_id`,a.`car_id`
+		,a.`sort`,a.`state`,a.`start_time`,a.`end_time`,a.`create_by`,a.`create_date`,a.`update_by`,a.`update_date`,
+		c.car_product_name as carProductName,CONCAT(b.brand_name,b.model_name,b.style_name) as carName
+		FROM adver_car as a
+		LEFT JOIN car_car as b ON a.car_id = b.car_id
+		LEFT JOIN car_product as c ON a.car_product_id = c.car_product_id
+        <where>  
+			<if test="adverCarId != null and adverCarId != ''"> and a.adver_car_id = #{adverCarId} </if>
+		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by adver_car_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from adver_car
+		 <where>  
+		  		  <if test="adverCarId != null and adverCarId != ''"> and adver_car_id = #{adverCarId} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="img != null and img != ''"> and img = #{img} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="url != null and url != ''"> and url = #{url} </if>
+		  		  <if test="carProductId != null and carProductId != ''"> and car_product_id = #{carProductId} </if>
+		  		  <if test="carProductInformationId != null and carProductInformationId != ''"> and car_product_information_id = #{carProductInformationId} </if>
+		  		  <if test="carId != null and carId != ''"> and car_id = #{carId} </if>
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		  <if test="state != null and state != ''"> and state = #{state} </if>
+		  		  <if test="startTime != null and startTime != ''"> and start_time = #{startTime} </if>
+		  		  <if test="endTime != null and endTime != ''"> and end_time = #{endTime} </if>
+		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
+		  		  <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="updateDate != null and updateDate != ''"> and update_date = #{updateDate} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.AdverManage.domain.AdverCarDO">
+		insert into adver_car
+		(
+			`adver_car_id`, 
+			`name`, 
+			`img`, 
+			`type`, 
+			`url`, 
+			`car_product_id`, 
+			`car_product_information_id`, 
+			`car_id`, 
+			`sort`, 
+			`state`, 
+			`start_time`, 
+			`end_time`, 
+			`create_by`, 
+			`create_date`, 
+			`update_by`, 
+			`update_date`
+		)
+		values
+		(
+			#{adverCarId}, 
+			#{name}, 
+			#{img}, 
+			#{type}, 
+			#{url}, 
+			#{carProductId}, 
+			#{carProductInformationId}, 
+			#{carId}, 
+			#{sort}, 
+			#{state}, 
+			#{startTime}, 
+			#{endTime}, 
+			#{createBy}, 
+			#{createDate}, 
+			#{updateBy}, 
+			#{updateDate}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.AdverManage.domain.AdverCarDO">
+		update adver_car 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="img != null">`img` = #{img}, </if>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="url != null">`url` = #{url}, </if>
+			<if test="carProductId != null">`car_product_id` = #{carProductId}, </if>
+			<if test="carProductInformationId != null">`car_product_information_id` = #{carProductInformationId}, </if>
+			<if test="carId != null">`car_id` = #{carId}, </if>
+			<if test="sort != null">`sort` = #{sort}, </if>
+			<if test="state != null">`state` = #{state}, </if>
+			<if test="startTime != null">`start_time` = #{startTime}, </if>
+			<if test="endTime != null">`end_time` = #{endTime}, </if>
+			<if test="createBy != null">`create_by` = #{createBy}, </if>
+			<if test="createDate != null">`create_date` = #{createDate}, </if>
+			<if test="updateBy != null">`update_by` = #{updateBy}, </if>
+			<if test="updateDate != null">`update_date` = #{updateDate}</if>
+		</set>
+		where adver_car_id = #{adverCarId}
+	</update>
+	
+	<delete id="remove">
+		delete from adver_car where adver_car_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from adver_car where adver_car_id in 
+		<foreach item="adverCarId" collection="array" open="(" separator="," close=")">
+			#{adverCarId}
+		</foreach>
+	</delete>
+
+
+	<select id="getCarInfo" resultType="com.bootdo.AdverManage.domain.AdverCarDO">
+		SELECT b.brand_id as brandId,b.car_model_id as carModelId,a.car_id FROM adver_car as a,car_car as b
+		WHERE a.car_id = b.car_id AND adver_car_id = #{value}
+	</select>
+</mapper>

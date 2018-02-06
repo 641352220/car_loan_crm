@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.OrderManage.dao.OrderDao">
+
+	<select id="get" resultType="com.bootdo.OrderManage.domain.OrderDO">
+		select `order_id`,`car_product_id`,`car_product_information_id`,`car_id`,`user_id`,`loan_business_id`,`loan_business_name`,`car_business_id`,`car_business_name`,`payments`,`term`,`rate`,`offer_type`,`car_price`,`channel`,`apply_time`,`state`,`update_time` from `order` where order_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.OrderManage.domain.OrderDO">
+		SELECT a.*,b.car_product_name as carProductName,c.car_product_information_name as carProductInformationName,CONCAT(d.brand_name,d.model_name,d.style_name) as carName
+		FROM `order` as a,car_product as b,car_product_information as c,car_car as d WHERE a.car_product_id = b.car_product_id AND a.car_product_information_id = c.car_product_information_id
+		AND a.car_id = d.car_id
+		<if test="carProductId != null and carProductId != ''"> and car_product_id = #{carProductId} </if>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by order_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		SELECT count(1)
+		FROM `order` as a,car_product as b,car_product_information as c,car_car as d WHERE a.car_product_id = b.car_product_id AND a.car_product_information_id = c.car_product_information_id
+		AND a.car_id = d.car_id
+		<if test="carProductId != null and carProductId != ''"> and car_product_id = #{carProductId} </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.OrderManage.domain.OrderDO" useGeneratedKeys="true" keyProperty="orderId">
+		insert into `order`
+		(
+			`car_product_id`, 
+			`car_product_information_id`, 
+			`car_id`, 
+			`user_id`, 
+			`loan_business_id`, 
+			`loan_business_name`, 
+			`car_business_id`, 
+			`car_business_name`, 
+			`payments`, 
+			`term`, 
+			`rate`, 
+			`offer_type`, 
+			`car_price`, 
+			`channel`, 
+			`apply_time`, 
+			`state`, 
+			`update_time`
+		)
+		values
+		(
+			#{carProductId}, 
+			#{carProductInformationId}, 
+			#{carId}, 
+			#{userId}, 
+			#{loanBusinessId}, 
+			#{loanBusinessName}, 
+			#{carBusinessId}, 
+			#{carBusinessName}, 
+			#{payments}, 
+			#{term}, 
+			#{rate}, 
+			#{offerType}, 
+			#{carPrice}, 
+			#{channel}, 
+			#{applyTime}, 
+			#{state}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.OrderManage.domain.OrderDO">
+		update `order`
+		<set>
+			<if test="carProductId != null">`car_product_id` = #{carProductId}, </if>
+			<if test="carProductInformationId != null">`car_product_information_id` = #{carProductInformationId}, </if>
+			<if test="carId != null">`car_id` = #{carId}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="loanBusinessId != null">`loan_business_id` = #{loanBusinessId}, </if>
+			<if test="loanBusinessName != null">`loan_business_name` = #{loanBusinessName}, </if>
+			<if test="carBusinessId != null">`car_business_id` = #{carBusinessId}, </if>
+			<if test="carBusinessName != null">`car_business_name` = #{carBusinessName}, </if>
+			<if test="payments != null">`payments` = #{payments}, </if>
+			<if test="term != null">`term` = #{term}, </if>
+			<if test="rate != null">`rate` = #{rate}, </if>
+			<if test="offerType != null">`offer_type` = #{offerType}, </if>
+			<if test="carPrice != null">`car_price` = #{carPrice}, </if>
+			<if test="channel != null">`channel` = #{channel}, </if>
+			<if test="applyTime != null">`apply_time` = #{applyTime}, </if>
+			<if test="state != null">`state` = #{state}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where order_id = #{orderId}
+	</update>
+	
+	<delete id="remove">
+		delete from `order` where order_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from `order` where order_id in
+		<foreach item="orderId" collection="array" open="(" separator="," close=")">
+			#{orderId}
+		</foreach>
+	</delete>
+
+
+	<select id="userList" resultType="com.bootdo.OrderManage.domain.OrderDO">
+		SELECT a.*,b.car_product_name as carProductName,c.car_product_information_name as carProductInformationName,CONCAT(d.brand_name,d.model_name,d.style_name) as carName
+		FROM `order` as a,car_product as b,car_product_information as c,car_car as d WHERE a.car_product_id = b.car_product_id
+		AND a.car_product_information_id = c.car_product_information_id AND a.car_id = d.car_id AND a.user_id = #{userId}
+			<!--<if test="userId != null and userId != ''"> and user_id = #{userId} </if>-->
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by order_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="userCount" resultType="int">
+		SELECT count(1)
+		FROM `order` as a,car_product as b,car_product_information as c,car_car as d WHERE a.car_product_id = b.car_product_id
+		AND a.car_product_information_id = c.car_product_information_id AND a.car_id = d.car_id AND a.user_id = #{userId}
+	</select>
+</mapper>

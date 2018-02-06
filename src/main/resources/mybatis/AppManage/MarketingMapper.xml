@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.AppManage.dao.MarketingDao">
+
+	<select id="get" resultType="com.bootdo.AppManage.domain.MarketingDO">
+		select `marketing_id`,`name`,`start_time`,`end_time`,`sort`,`state` from app_marketing where marketing_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.AppManage.domain.MarketingDO">
+		select `marketing_id`,`name`,`start_time`,`end_time`,`sort`,`state` from app_marketing
+        <where>  
+		  		  <if test="marketingId != null and marketingId != ''"> and marketing_id = #{marketingId} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="startTime != null and startTime != ''"> and start_time = #{startTime} </if>
+		  		  <if test="endTime != null and endTime != ''"> and end_time = #{endTime} </if>
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		  <if test="state != null and state != ''"> and state = #{state} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by marketing_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from app_marketing
+		 <where>  
+		  		  <if test="marketingId != null and marketingId != ''"> and marketing_id = #{marketingId} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="startTime != null and startTime != ''"> and start_time = #{startTime} </if>
+		  		  <if test="endTime != null and endTime != ''"> and end_time = #{endTime} </if>
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		  <if test="state != null and state != ''"> and state = #{state} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.AppManage.domain.MarketingDO">
+		insert into app_marketing
+		(
+			`marketing_id`, 
+			`name`, 
+			`start_time`, 
+			`end_time`, 
+			`sort`, 
+			`state`
+		)
+		values
+		(
+			#{marketingId}, 
+			#{name}, 
+			#{startTime}, 
+			#{endTime}, 
+			#{sort}, 
+			#{state}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.AppManage.domain.MarketingDO">
+		update app_marketing 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="startTime != null">`start_time` = #{startTime}, </if>
+			<if test="endTime != null">`end_time` = #{endTime}, </if>
+			<if test="sort != null">`sort` = #{sort}, </if>
+			<if test="state != null">`state` = #{state}</if>
+		</set>
+		where marketing_id = #{marketingId}
+	</update>
+	
+	<delete id="remove">
+		delete from app_marketing where marketing_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from app_marketing where marketing_id in 
+		<foreach item="marketingId" collection="array" open="(" separator="," close=")">
+			#{marketingId}
+		</foreach>
+	</delete>
+
+	<select id="nameList" resultType="com.bootdo.AppManage.domain.MarketingDO">
+		select `marketing_id`,`name` from app_marketing where state = 1
+	</select>
+
+</mapper>

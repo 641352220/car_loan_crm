@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+
+<body class="gray-bg">
+<input type="hidden" id="carProductInformationId" th:value="${carProductInformationId}"/>
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox-content">
+					<div id="carTree"></div>
+				</div>
+				<div class="form-group hidden">
+					<div class="col-sm-12 col-sm-offset-12">
+						<button type="submit" class="btn btn-primary">提交</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+
+
+	<script type="text/javascript">
+        var brandIds = new Array();
+        var modelIds = new Array();
+        var carProductInformationId = $('#carProductInformationId').val();
+		$(document).ready(function() {
+			getTreeData()
+		});
+		function getTreeData() {
+			$.ajax({
+				type : "GET",
+				url : "/CarManage/car/treeByCpii",
+				data :{carProductInformationId:carProductInformationId},
+				success : function(tree) {
+					loadTree(tree);
+				}
+			});
+		}
+		function loadTree(tree) {
+			$('#carTree').jstree({
+				'core' : {
+                    'check_callback':true,
+					'data' : tree
+				},
+				"plugins" : [ "search" ]
+			});
+			$('#carTree').jstree().open_all();
+		}
+
+		$('#carTree').on("changed.jstree", function(e, data) {
+            var carNmae = data.instance.get_path(data.node.id,"/",0);
+            var sf = carNmae.split("/");
+            var sflength = sf.length;
+            if(sf[0] == '顶级节点'){
+
+			}else{
+                sflength = sflength+1;
+			}
+            if(sflength == 2){//选中的市品牌
+                if(sfHave(brandIds,data.node.id)){
+                    brandIds.push(data.node.id);
+                    getCarTreeDataTwo(data.node.id);
+                }
+            }else if(sflength == 3){//选中的是车型
+                if(sfHave(modelIds,data.node.id)){
+                    modelIds.push(data.node.id);
+                    getCarTreeDataThree(data.node.id);
+                }
+            }else if(sflength == 4){
+                parent.loadCar(data.node.id,carNmae);
+                var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+                parent.layer.close(index);
+            }
+		});
+
+
+        function getCarTreeDataTwo(id) {
+            $.ajax({
+                type : "GET",
+                url : "/CarManage/car/treeTwoByCpii",
+                data : {id : id ,carProductInformationId:carProductInformationId},
+                success : function(data) {
+                    if(data.children.length == 0){
+                        if("顶级节点" == data.text){
+							return;
+						}
+                        $("#carTree").jstree("create_node", id,  data, "last", false, true);
+                    }else{
+                        for(var i = 0;i<data.children.length;i++){
+                            $("#carTree").jstree("create_node", id,  data.children[i], "last", false, true);
+                        }
+                    }
+                }
+            });
+        }
+
+        function getCarTreeDataThree(id) {
+            $.ajax({
+                type : "GET",
+                url : "/CarManage/car/treeThreeByCpii",
+                data : {id : id,carProductInformationId:carProductInformationId },
+                success : function(data) {
+                    if(data.children.length == 0){
+                        if("顶级节点" == data.text){
+                            return;
+                        }
+                            $("#carTree").jstree("create_node", id,  data, "last", false, true);
+					}else{
+                        for(var i = 0;i<data.children.length;i++){
+                            $("#carTree").jstree("create_node", id,  data.children[i], "last", false, true);
+                        }
+					}
+                }
+            });
+        }
+
+        function sfHave(arr, obj) {
+            var i = arr.length;
+            while (i--) {
+                if (arr[i] === obj) {
+                    return false;
+                }
+            }
+            return true;
+        }
+	</script>
+</body>
+
+</html>

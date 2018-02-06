@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="business_id" name="business_id" th:value="${city.business_id}"  type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">城市ID：</label>
+								<div class="col-sm-8">
+									<input id="cityId" name="cityId" th:value="${city.cityId}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">级别 1 区域 2 省 3 市 4区：</label>
+								<div class="col-sm-8">
+									<input id="level" name="level" th:value="${city.level}" class="form-control" type="text">
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/BusinessManage/city/add.js">
+	</script>
+</body>
+</html>

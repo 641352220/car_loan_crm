@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.UserManage.dao.UserAppDao">
+
+	<select id="get" resultType="com.bootdo.UserManage.domain.UserAppDO">
+		select `user_id`,`nick_name`,`head_portrait`,`login_type`,`phone`,`vx_marking`,`qq_marking`,`zfb_marking`,`password`,`time`,`login_time`,`longitude`,`latitude`,`province`,`city`,`area`,`address`,`state` from user where user_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.UserManage.domain.UserAppDO">
+		select `user_id`,`nick_name`,`head_portrait`,`login_type`,`phone`,`vx_marking`,`qq_marking`,`zfb_marking`,`password`,`time`,`login_time`,`longitude`,`latitude`,`province`,`city`,`area`,`address`,`state` from user
+        <where>  
+		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+		  		  <if test="nickName != null and nickName != ''"> and nick_name = #{nickName} </if>
+		  		  <if test="headPortrait != null and headPortrait != ''"> and head_portrait = #{headPortrait} </if>
+		  		  <if test="loginType != null and loginType != ''"> and login_type = #{loginType} </if>
+		  		  <if test="phone != null and phone != ''"> and phone = #{phone} </if>
+		  		  <if test="vxMarking != null and vxMarking != ''"> and vx_marking = #{vxMarking} </if>
+		  		  <if test="qqMarking != null and qqMarking != ''"> and qq_marking = #{qqMarking} </if>
+		  		  <if test="zfbMarking != null and zfbMarking != ''"> and zfb_marking = #{zfbMarking} </if>
+		  		  <if test="password != null and password != ''"> and password = #{password} </if>
+		  		  <if test="time != null and time != ''"> and time = #{time} </if>
+		  		  <if test="loginTime != null and loginTime != ''"> and login_time = #{loginTime} </if>
+		  		  <if test="longitude != null and longitude != ''"> and longitude = #{longitude} </if>
+		  		  <if test="latitude != null and latitude != ''"> and latitude = #{latitude} </if>
+		  		  <if test="province != null and province != ''"> and province = #{province} </if>
+		  		  <if test="city != null and city != ''"> and city = #{city} </if>
+		  		  <if test="area != null and area != ''"> and area = #{area} </if>
+		  		  <if test="address != null and address != ''"> and address = #{address} </if>
+		  		  <if test="state != null and state != ''"> and state = #{state} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by user_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from user
+		 <where>  
+		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+		  		  <if test="nickName != null and nickName != ''"> and nick_name = #{nickName} </if>
+		  		  <if test="headPortrait != null and headPortrait != ''"> and head_portrait = #{headPortrait} </if>
+		  		  <if test="loginType != null and loginType != ''"> and login_type = #{loginType} </if>
+		  		  <if test="phone != null and phone != ''"> and phone = #{phone} </if>
+		  		  <if test="vxMarking != null and vxMarking != ''"> and vx_marking = #{vxMarking} </if>
+		  		  <if test="qqMarking != null and qqMarking != ''"> and qq_marking = #{qqMarking} </if>
+		  		  <if test="zfbMarking != null and zfbMarking != ''"> and zfb_marking = #{zfbMarking} </if>
+		  		  <if test="password != null and password != ''"> and password = #{password} </if>
+		  		  <if test="time != null and time != ''"> and time = #{time} </if>
+		  		  <if test="loginTime != null and loginTime != ''"> and login_time = #{loginTime} </if>
+		  		  <if test="longitude != null and longitude != ''"> and longitude = #{longitude} </if>
+		  		  <if test="latitude != null and latitude != ''"> and latitude = #{latitude} </if>
+		  		  <if test="province != null and province != ''"> and province = #{province} </if>
+		  		  <if test="city != null and city != ''"> and city = #{city} </if>
+		  		  <if test="area != null and area != ''"> and area = #{area} </if>
+		  		  <if test="address != null and address != ''"> and address = #{address} </if>
+		  		  <if test="state != null and state != ''"> and state = #{state} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.UserManage.domain.UserAppDO" useGeneratedKeys="true" keyProperty="userId">
+		insert into user
+		(
+			`nick_name`, 
+			`head_portrait`, 
+			`login_type`, 
+			`phone`, 
+			`vx_marking`, 
+			`qq_marking`, 
+			`zfb_marking`, 
+			`password`, 
+			`time`, 
+			`login_time`, 
+			`longitude`, 
+			`latitude`, 
+			`province`, 
+			`city`, 
+			`area`, 
+			`address`, 
+			`state`
+		)
+		values
+		(
+			#{nickName}, 
+			#{headPortrait}, 
+			#{loginType}, 
+			#{phone}, 
+			#{vxMarking}, 
+			#{qqMarking}, 
+			#{zfbMarking}, 
+			#{password}, 
+			#{time}, 
+			#{loginTime}, 
+			#{longitude}, 
+			#{latitude}, 
+			#{province}, 
+			#{city}, 
+			#{area}, 
+			#{address}, 
+			#{state}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.UserManage.domain.UserAppDO">
+		update user 
+		<set>
+			<if test="nickName != null">`nick_name` = #{nickName}, </if>
+			<if test="headPortrait != null">`head_portrait` = #{headPortrait}, </if>
+			<if test="loginType != null">`login_type` = #{loginType}, </if>
+			<if test="phone != null">`phone` = #{phone}, </if>
+			<if test="vxMarking != null">`vx_marking` = #{vxMarking}, </if>
+			<if test="qqMarking != null">`qq_marking` = #{qqMarking}, </if>
+			<if test="zfbMarking != null">`zfb_marking` = #{zfbMarking}, </if>
+			<if test="password != null">`password` = #{password}, </if>
+			<if test="time != null">`time` = #{time}, </if>
+			<if test="loginTime != null">`login_time` = #{loginTime}, </if>
+			<if test="longitude != null">`longitude` = #{longitude}, </if>
+			<if test="latitude != null">`latitude` = #{latitude}, </if>
+			<if test="province != null">`province` = #{province}, </if>
+			<if test="city != null">`city` = #{city}, </if>
+			<if test="area != null">`area` = #{area}, </if>
+			<if test="address != null">`address` = #{address}, </if>
+			<if test="state != null">`state` = #{state}</if>
+		</set>
+		where user_id = #{userId}
+	</update>
+	
+	<delete id="remove">
+		delete from user where user_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from user where user_id in 
+		<foreach item="userId" collection="array" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+	</delete>
+
+</mapper>

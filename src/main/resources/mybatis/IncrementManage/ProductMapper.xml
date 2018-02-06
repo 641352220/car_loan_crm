@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.IncrementManage.dao.IncrementProductDao">
+
+	<select id="get" resultType="com.bootdo.IncrementManage.domain.IncrementProductDO">
+		select `product_id`,`type`,`sort`,`name`,`adver`,`money_min`,`money_max`,`term_min`,`term_max`,`apply_url`,`logo`,`state` from increment_product where product_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.IncrementManage.domain.IncrementProductDO">
+		select `product_id`,`type`,`sort`,`name`,`adver`,`money_min`,`money_max`,`term_min`,`term_max`,`apply_url`,`logo`,`state` from increment_product
+        <where>  
+		  		  <if test="productId != null and productId != ''"> and product_id = #{productId} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="adver != null and adver != ''"> and adver = #{adver} </if>
+		  		  <if test="moneyMin != null and moneyMin != ''"> and money_min = #{moneyMin} </if>
+		  		  <if test="moneyMax != null and moneyMax != ''"> and money_max = #{moneyMax} </if>
+		  		  <if test="termMin != null and termMin != ''"> and term_min = #{termMin} </if>
+		  		  <if test="termMax != null and termMax != ''"> and term_max = #{termMax} </if>
+		  		  <if test="applyUrl != null and applyUrl != ''"> and apply_url = #{applyUrl} </if>
+		  		  <if test="logo != null and logo != ''"> and logo = #{logo} </if>
+		  		  <if test="state != null and state != ''"> and state = #{state} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by product_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from increment_product
+		 <where>  
+		  		  <if test="productId != null and productId != ''"> and product_id = #{productId} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="adver != null and adver != ''"> and adver = #{adver} </if>
+		  		  <if test="moneyMin != null and moneyMin != ''"> and money_min = #{moneyMin} </if>
+		  		  <if test="moneyMax != null and moneyMax != ''"> and money_max = #{moneyMax} </if>
+		  		  <if test="termMin != null and termMin != ''"> and term_min = #{termMin} </if>
+		  		  <if test="termMax != null and termMax != ''"> and term_max = #{termMax} </if>
+		  		  <if test="applyUrl != null and applyUrl != ''"> and apply_url = #{applyUrl} </if>
+		  		  <if test="logo != null and logo != ''"> and logo = #{logo} </if>
+		  		  <if test="state != null and state != ''"> and state = #{state} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.IncrementManage.domain.IncrementProductDO" useGeneratedKeys="true" keyProperty="productId">
+		insert into increment_product
+		(
+			`type`, 
+			`sort`, 
+			`name`, 
+			`adver`, 
+			`money_min`, 
+			`money_max`, 
+			`term_min`, 
+			`term_max`, 
+			`apply_url`, 
+			`logo`, 
+			`state`
+		)
+		values
+		(
+			#{type}, 
+			#{sort}, 
+			#{name}, 
+			#{adver}, 
+			#{moneyMin}, 
+			#{moneyMax}, 
+			#{termMin}, 
+			#{termMax}, 
+			#{applyUrl}, 
+			#{logo}, 
+			#{state}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.IncrementManage.domain.IncrementProductDO">
+		update increment_product 
+		<set>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="sort != null">`sort` = #{sort}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="adver != null">`adver` = #{adver}, </if>
+			<if test="moneyMin != null">`money_min` = #{moneyMin}, </if>
+			<if test="moneyMax != null">`money_max` = #{moneyMax}, </if>
+			<if test="termMin != null">`term_min` = #{termMin}, </if>
+			<if test="termMax != null">`term_max` = #{termMax}, </if>
+			<if test="applyUrl != null">`apply_url` = #{applyUrl}, </if>
+			<if test="logo != null">`logo` = #{logo}, </if>
+			<if test="state != null">`state` = #{state}</if>
+		</set>
+		where product_id = #{productId}
+	</update>
+	
+	<delete id="remove">
+		delete from increment_product where product_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from increment_product where product_id in 
+		<foreach item="productId" collection="array" open="(" separator="," close=")">
+			#{productId}
+		</foreach>
+	</delete>
+
+</mapper>

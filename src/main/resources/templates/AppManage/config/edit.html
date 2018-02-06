@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">公司名字：</label>
+								<div class="col-sm-8">
+									<input id="name" name="name" th:value="${name}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">流程：</label>
+								<div class="col-sm-6">
+									<input id="img" name="process" th:value="${process}" class="form-control" type="text">
+								</div>
+								<input id="img-btn" class="btn btn-warning" type="button" value="选择图片">
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">联系我们logo：</label>
+								<div class="col-sm-6">
+									<input id="img2" name="contactLogo" th:value="${contactLogo}" class="form-control" type="text">
+								</div>
+								<input id="img2-btn" class="btn btn-warning" type="button" value="选择图片">
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">二手车链接：</label>
+								<div class="col-sm-8">
+									<input id="usedCarLink" name="usedCarLink" th:value="${usedCarLink}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">平台介绍：</label>
+								<div class="col-sm-8">
+									<input id="platformIntroduction" name="platformIntroduction" th:value="${platformIntroduction}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">招商工作时间：</label>
+								<div class="col-sm-8">
+									<input id="workTime" name="workTime" th:value="${workTime}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">招商QQ：</label>
+								<div class="col-sm-8">
+									<input id="attractInvestmentQQ" name="attractInvestmentQQ" th:value="${attractInvestmentQQ}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">招商电话：</label>
+								<div class="col-sm-8">
+									<input id="attractInvestmentTel" name="attractInvestmentTel" th:value="${attractInvestmentTel}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">客服工作时间：</label>
+								<div class="col-sm-8">
+									<input id="CustomerWorkTime" name="CustomerWorkTime" th:value="${CustomerWorkTime}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">客户QQ：</label>
+								<div class="col-sm-8">
+									<input id="CustomerQQ" name="CustomerQQ" th:value="${CustomerQQ}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">客服电话：</label>
+								<div class="col-sm-8">
+									<input id="CustomerTel" name="CustomerTel" th:value="${CustomerTel}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">公司名字(联系我们)：</label>
+								<div class="col-sm-8">
+									<input id="contactName" name="contactName" th:value="${contactName}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">电话(联系我们)：</label>
+								<div class="col-sm-8">
+									<input id="contactTel" name="contactTel" th:value="${contactTel}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">公司地址(联系我们)：</label>
+								<div class="col-sm-8">
+									<input id="contactAdress" name="contactAdress" th:value="${contactAdress}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">版权：</label>
+								<div class="col-sm-8">
+									<input id="copyright" name="copyright" th:value="${copyright}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/AppManage/config/edit.js">
+	</script>
+</body>
+</html>

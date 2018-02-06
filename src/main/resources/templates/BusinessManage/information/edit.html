@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+							<input id="businessId" name="businessId" th:value="${information.businessId}"  type="hidden">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">公司名字：</label>
+								<div class="col-sm-8">
+									<input id="companyName" name="companyName" th:value="${information.companyName}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">联系人姓名：</label>
+								<div class="col-sm-8">
+									<input id="contactName" name="contactName" th:value="${information.contactName}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">对外联系方式：</label>
+								<div class="col-sm-8">
+									<input id="contactWay" name="contactWay" th:value="${information.contactWay}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">QQ：</label>
+								<div class="col-sm-8">
+									<input id="qq" name="qq" th:value="${information.qq}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">邮箱：</label>
+								<div class="col-sm-8">
+									<input id="email" name="email" th:value="${information.email}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">图片地址：</label>
+								<div class="col-sm-6">
+									<input id="img" name="img" th:value="${information.img}" class="form-control" type="text">
+								</div>
+								<input id="img-btn" class="btn btn-warning" type="button" value="选择图标">
+							</div>
+							<div class="form-group">
+								<!--  longitude 经度 latitude纬度 省 市 区             -->
+								<input id="longitude" name="longitude" th:value="${information.longitude}" type="hidden">
+								<input id="latitude" name="latitude" th:value="${information.latitude}"  type="hidden">
+								<input id="province" name="province" th:value="${information.province}"  type="hidden">
+								<input id="city" name="city" th:value="${information.city}"  type="hidden">
+								<input id="area" name="area" th:value="${information.area}"  type="hidden">
+								<label class="col-sm-3 control-label">位置：</label>
+								<div class="col-sm-6">
+									<input id="addressString" name="addressString" th:value="${information.addressString}" class="form-control" type="text">
+								</div>
+								<input id="map-btn" class="btn btn-warning" type="button" value="选择位置">
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">详细地址：</label>
+								<div class="col-sm-8">
+									<input id="address" name="address" th:value="${information.address}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">支持的城市：</label>
+								<div class="col-sm-8">
+									<select data-placeholder="请选择" name="cityIds" id="cityIds"
+											class="form-control chosen-select" tabindex="2"
+											style="width: 100%" multiple="multiple">
+										<option value="">请选择</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">支持的品牌：</label>
+								<div class="col-sm-8">
+									<select data-placeholder="请选择" name="brandIds" id="brandIds"
+											class="form-control chosen-select" tabindex="2"
+											style="width: 100%" multiple="multiple">
+										<option value="">请选择</option>
+									</select>
+								</div>
+							</div>
+							<!--<div class="form-group">-->
+								<!--<label class="col-sm-3 control-label">经度：</label>-->
+								<!--<div class="col-sm-8">-->
+									<!--<input id="longitude" name="longitude" th:value="${information.longitude}" class="form-control" type="text">-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--<div class="form-group">-->
+								<!--<label class="col-sm-3 control-label">纬度：</label>-->
+								<!--<div class="col-sm-8">-->
+									<!--<input id="latitude" name="latitude" th:value="${information.latitude}" class="form-control" type="text">-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--<div class="form-group">-->
+								<!--<label class="col-sm-3 control-label">省份：</label>-->
+								<!--<div class="col-sm-8">-->
+									<!--<input id="province" name="province" th:value="${information.province}" class="form-control" type="text">-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--<div class="form-group">-->
+								<!--<label class="col-sm-3 control-label">市：</label>-->
+								<!--<div class="col-sm-8">-->
+									<!--<input id="city" name="city" th:value="${information.city}" class="form-control" type="text">-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--<div class="form-group">-->
+								<!--<label class="col-sm-3 control-label">区/县：</label>-->
+								<!--<div class="col-sm-8">-->
+									<!--<input id="area" name="area" th:value="${information.area}" class="form-control" type="text">-->
+								<!--</div>-->
+							<!--</div>-->
+							<!---->
+							<!--<div class="form-group">-->
+								<!--<label class="col-sm-3 control-label">合作方式 0 没填写 1 官方 2 自营：</label>-->
+								<!--<div class="col-sm-8">-->
+									<!--<input id="cooperationType" name="cooperationType" th:value="${information.cooperationType}" class="form-control" type="text">-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--<div class="form-group">-->
+								<!--<label class="col-sm-3 control-label">经销商等级 0 未填写 1 一级 2 二级：</label>-->
+								<!--<div class="col-sm-8">-->
+									<!--<input id="grade" name="grade" th:value="${information.grade}" class="form-control" type="text">-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--<div class="form-group">-->
+								<!--<label class="col-sm-3 control-label">排序：</label>-->
+								<!--<div class="col-sm-8">-->
+									<!--<input id="sort" name="sort" th:value="${information.sort}" class="form-control" type="text">-->
+								<!--</div>-->
+							<!--</div>-->
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/BusinessManage/information/edit.js">
+	</script>
+</body>
+</html>

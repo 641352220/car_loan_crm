@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.AppManage.dao.LoanConfigDao">
+
+	<select id="get" resultType="com.bootdo.AppManage.domain.LoanConfigDO">
+		select `loan_config_id`,`type`,`config_value` from app_loan_config where loan_config_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.AppManage.domain.LoanConfigDO">
+		select `loan_config_id`,`type`,`config_value` from app_loan_config
+        <where>  
+		  		  <if test="loanConfigId != null and loanConfigId != ''"> and loan_config_id = #{loanConfigId} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="configValue != null and configValue != ''"> and config_value = #{configValue} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by loan_config_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from app_loan_config
+		 <where>  
+		  		  <if test="loanConfigId != null and loanConfigId != ''"> and loan_config_id = #{loanConfigId} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="configValue != null and configValue != ''"> and config_value = #{configValue} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.AppManage.domain.LoanConfigDO">
+		insert into app_loan_config
+		(
+			`loan_config_id`, 
+			`type`, 
+			`config_value`
+		)
+		values
+		(
+			#{loanConfigId}, 
+			#{type}, 
+			#{configValue}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.AppManage.domain.LoanConfigDO">
+		update app_loan_config 
+		<set>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="configValue != null">`config_value` = #{configValue}</if>
+		</set>
+		where loan_config_id = #{loanConfigId}
+	</update>
+	
+	<delete id="remove">
+		delete from app_loan_config where loan_config_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from app_loan_config where loan_config_id in 
+		<foreach item="loanConfigId" collection="array" open="(" separator="," close=")">
+			#{loanConfigId}
+		</foreach>
+	</delete>
+
+	<select id="LoanConfigDOList" resultType="com.bootdo.AppManage.domain.LoanConfigDO">
+		SELECT cl.*,cp.car_product_information_id as sf,cp.rate as rate FROM app_loan_config as cl
+		LEFT JOIN car_product_information_config as cp ON cl.loan_config_id = cp.loan_config_id
+		AND cp.car_product_information_id = #{carProductInformationId}
+		WHERE cl.type = #{type}
+	</select>
+</mapper>

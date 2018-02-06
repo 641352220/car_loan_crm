@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.BusinessManage.dao.InformationDao">
+
+	<select id="get" resultType="com.bootdo.BusinessManage.domain.InformationDO">
+		select `business_id`,`parent_id`,`company_name`,`contact_name`,`contact_way`,`QQ`,`email`,`state`,`longitude`,`latitude`,`province`,`city`,`area`,`address`,`cooperation_type`,`grade`,`sort`,`img`,`create_by`,`create_date`,`update_by`,`update_date` from business_information where business_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.BusinessManage.domain.InformationDO">
+		select `business_id`,`parent_id`,`company_name`,`contact_name`,`contact_way`,`QQ`,`email`,`state`,`longitude`,`latitude`,`province`,`city`,`area`,`address`,`cooperation_type`,`grade`,`sort`,`img`,`create_by`,`create_date`,`update_by`,`update_date` from business_information
+        <where>  
+		  		  <if test="businessId != null and businessId != ''"> and business_id = #{businessId} </if>
+		  		  <if test="parentId != null and parentId != ''"> and parent_id = #{parentId} </if>
+		  		  <if test="companyName != null and companyName != ''"> and company_name = #{companyName} </if>
+		  		  <if test="contactName != null and contactName != ''"> and contact_name = #{contactName} </if>
+		  		  <if test="contactWay != null and contactWay != ''"> and contact_way = #{contactWay} </if>
+		  		  <if test="qq != null and qq != ''"> and QQ = #{qq} </if>
+		  		  <if test="email != null and email != ''"> and email = #{email} </if>
+		  		  <if test="state != null and state != ''"> and state = #{state} </if>
+		  		  <if test="longitude != null and longitude != ''"> and longitude = #{longitude} </if>
+		  		  <if test="latitude != null and latitude != ''"> and latitude = #{latitude} </if>
+		  		  <if test="province != null and province != ''"> and province = #{province} </if>
+		  		  <if test="city != null and city != ''"> and city = #{city} </if>
+		  		  <if test="area != null and area != ''"> and area = #{area} </if>
+		  		  <if test="address != null and address != ''"> and address = #{address} </if>
+		  		  <if test="cooperationType != null and cooperationType != ''"> and cooperation_type = #{cooperationType} </if>
+		  		  <if test="grade != null and grade != ''"> and grade = #{grade} </if>
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
+		  		  <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="updateDate != null and updateDate != ''"> and update_date = #{updateDate} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by business_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from business_information
+		 <where>  
+		  		  <if test="businessId != null and businessId != ''"> and business_id = #{businessId} </if>
+		  		  <if test="parentId != null and parentId != ''"> and parent_id = #{parentId} </if>
+		  		  <if test="companyName != null and companyName != ''"> and company_name = #{companyName} </if>
+		  		  <if test="contactName != null and contactName != ''"> and contact_name = #{contactName} </if>
+		  		  <if test="contactWay != null and contactWay != ''"> and contact_way = #{contactWay} </if>
+		  		  <if test="qq != null and qq != ''"> and QQ = #{qq} </if>
+		  		  <if test="email != null and email != ''"> and email = #{email} </if>
+		  		  <if test="state != null and state != ''"> and state = #{state} </if>
+		  		  <if test="longitude != null and longitude != ''"> and longitude = #{longitude} </if>
+		  		  <if test="latitude != null and latitude != ''"> and latitude = #{latitude} </if>
+		  		  <if test="province != null and province != ''"> and province = #{province} </if>
+		  		  <if test="city != null and city != ''"> and city = #{city} </if>
+		  		  <if test="area != null and area != ''"> and area = #{area} </if>
+		  		  <if test="address != null and address != ''"> and address = #{address} </if>
+		  		  <if test="cooperationType != null and cooperationType != ''"> and cooperation_type = #{cooperationType} </if>
+		  		  <if test="grade != null and grade != ''"> and grade = #{grade} </if>
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
+		  		  <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="updateDate != null and updateDate != ''"> and update_date = #{updateDate} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.BusinessManage.domain.InformationDO" useGeneratedKeys="true" keyProperty="businessId">
+		insert into business_information
+		(
+			`parent_id`, 
+			`company_name`, 
+			`contact_name`, 
+			`contact_way`, 
+			`QQ`, 
+			`email`, 
+			`state`, 
+			`longitude`, 
+			`latitude`, 
+			`province`, 
+			`city`, 
+			`area`, 
+			`address`, 
+			`cooperation_type`, 
+			`grade`, 
+			`sort`,
+			`img`,
+			`create_by`, 
+			`create_date`, 
+			`update_by`, 
+			`update_date`
+		)
+		values
+		(
+			#{parentId}, 
+			#{companyName}, 
+			#{contactName}, 
+			#{contactWay}, 
+			#{qq}, 
+			#{email}, 
+			#{state}, 
+			#{longitude}, 
+			#{latitude}, 
+			#{province}, 
+			#{city}, 
+			#{area}, 
+			#{address}, 
+			#{cooperationType}, 
+			#{grade}, 
+			#{sort},
+			#{img},
+			#{createBy}, 
+			#{createDate}, 
+			#{updateBy}, 
+			#{updateDate}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.BusinessManage.domain.InformationDO">
+		update business_information 
+		<set>
+			<if test="parentId != null">`parent_id` = #{parentId}, </if>
+			<if test="companyName != null">`company_name` = #{companyName}, </if>
+			<if test="contactName != null">`contact_name` = #{contactName}, </if>
+			<if test="contactWay != null">`contact_way` = #{contactWay}, </if>
+			<if test="qq != null">`QQ` = #{qq}, </if>
+			<if test="email != null">`email` = #{email}, </if>
+			<if test="state != null">`state` = #{state}, </if>
+			<if test="longitude != null">`longitude` = #{longitude}, </if>
+			<if test="latitude != null">`latitude` = #{latitude}, </if>
+			<if test="province != null">`province` = #{province}, </if>
+			<if test="city != null">`city` = #{city}, </if>
+			<if test="area != null">`area` = #{area}, </if>
+			<if test="address != null">`address` = #{address}, </if>
+			<if test="cooperationType != null">`cooperation_type` = #{cooperationType}, </if>
+			<if test="grade != null">`grade` = #{grade}, </if>
+			<if test="sort != null">`sort` = #{sort}, </if>
+			<if test="img != null">`img` = #{img}, </if>
+			<if test="createBy != null">`create_by` = #{createBy}, </if>
+			<if test="createDate != null">`create_date` = #{createDate}, </if>
+			<if test="updateBy != null">`update_by` = #{updateBy}, </if>
+			<if test="updateDate != null">`update_date` = #{updateDate}</if>
+		</set>
+		where business_id = #{businessId}
+	</update>
+	
+	<delete id="remove">
+		delete from business_information where business_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from business_information where business_id in 
+		<foreach item="businessId" collection="array" open="(" separator="," close=")">
+			#{businessId}
+		</foreach>
+	</delete>
+
+	<select id="nameList" resultType="com.bootdo.BusinessManage.domain.InformationDO">
+		select `business_id`,`parent_id`,`company_name` from business_information
+	</select>
+
+</mapper>

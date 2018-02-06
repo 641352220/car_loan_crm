@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.AppManage.dao.CityDao">
+
+
+
+	<select id="productCity" resultType="com.bootdo.AppManage.domain.CityDO">
+		select a.*,b.car_product_id  as sf FROM app_city as a
+		LEFT JOIN car_product_city as b ON a.city_id = b.city_id AND b.car_product_id = #{id}
+		WHERE a.`level` = #{level}
+	</select>
+
+	<select id="businessCity" resultType="com.bootdo.AppManage.domain.CityDO">
+		SELECT a.*,b.business_id as sf FROM app_city as a
+		LEFT JOIN business_city as b ON a.city_id = b.city_id AND b.business_id =  #{id}
+		WHERE a.`level` = #{level}
+	</select>
+</mapper>
